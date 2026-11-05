@@ -1,0 +1,338 @@
+:root{
+    --primary-color: #E5EEE4;
+    --text-color: #222831;
+    --card-color: #ffffff;
+    --field-color: #ffffff;
+    --muted-color: #666666;
+    --border-color: #d5d9d5;
+    --font-family: 'Poppins', sans-serif;
+    --font-size-h1: 20px;
+    --line-height: 1.5;
+    --border-radius: 5px;
+}
+
+html{
+    padding: 0;
+    margin: 0;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 24px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    background: var(--primary-color);
+    color: var(--text-color);
+}
+
+.page-header{
+    width: min(100%, 960px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+h1{
+    font-family: var(--font-family);
+    font-size: var(--font-size-h1);
+}
+
+.saldo {
+    width: min(100%, 960px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--card-color);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    font-family: var(--font-family);
+}
+
+.saldo h2{
+    margin: -5px 0 20px 0 ;
+}
+
+.hidden {
+    display: none;
+}
+
+.inputPengeluaran{
+    width: min(100%, 960px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--card-color);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-form{
+    width: min(100%, 960px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--card-color);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.category-form.hidden{
+    display: none;
+}
+
+.category-form h2,
+.category-message{
+    margin: 0;
+}
+
+.category-message{
+    min-height: 1.5em;
+    color: var(--muted-color);
+}
+
+input[type="text"], input[type="number"]{
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--field-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+/* Styling Menu Dropdown (Select) */
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background-color: var(--field-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    border-color: #2196f3;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.15);
+}
+
+/* Styling Tajuk Kumpulan (Optgroup) - Lebih Jelas & Pemisah Tegas */
+select optgroup {
+    font-weight: 700;
+    font-size: 13px;
+    color: #1a202c;
+    background-color: #cbd5e1; /* Warna kelabu yang lebih kontras untuk pemisah */
+    padding: 8px 10px;
+}
+
+/* Styling Pilihan Kategori (Option) */
+select option {
+    font-weight: 400;
+    font-size: 14px;
+    color: #1e293b;
+    background-color: #ffffff;
+    padding: 10px 14px;
+}
+
+button{
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--text-color);
+    color: var(--primary-color);
+    cursor: pointer;
+    font-family: var(--font-family);
+    font-weight: 600;
+}
+
+.dashboard-grid{
+    width: min(100%, 960px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.card-section {
+    min-width: 0;
+    background: var(--card-color);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    min-height: 350px;
+}
+
+.transaction-controls{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.transaction-list{
+    max-height: 350px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.monthly-summary h4{
+    margin-bottom: 8px;
+}
+
+.monthly-summary ul{
+    padding-left: 20px;
+    color: var(--muted-color);
+}
+
+.card-section h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.trans-info .nama {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+.trans-info .harga {
+    color: #2196f3;
+    font-weight: 700;
+    margin: 4px 0;
+}
+
+.trans-info .badge-kategori {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.btn-delete {
+    background-color: #ea4335;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+
+.chart-container {
+    position: relative;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 24px 16px 32px;
+    }
+
+    .page-header,
+    .saldo,
+    .inputPengeluaran,
+    .category-form,
+    .dashboard-grid {
+        width: 100%;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+
+    .page-header button {
+        width: 100%;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-section {
+        min-height: auto;
+    }
+
+    .transaction-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .chart-container {
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .saldo,
+    .inputPengeluaran,
+    .card-section {
+        padding: 18px 16px;
+    }
+
+    .transaction-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .transaction-controls label,
+    .transaction-controls select {
+        width: 100%;
+    }
+
+    .btn-delete {
+        width: 100%;
+    }
+}

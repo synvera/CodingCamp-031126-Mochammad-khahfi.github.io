@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Expense &amp; Budget Visualizer</title>
+</head>
+<body>
+    <header class="page-header">
+        <h1>Expense &amp; Budget Visualizer</h1>
+        <button id="toggle-category-form" type="button" aria-expanded="false" aria-controls="form-kategori">Tambah Kategori</button>
+    </header>
+
+    <section class="category-form hidden" id="form-kategori" aria-labelledby="category-title">
+        <h2 id="category-title">Tambah Kategori</h2>
+        <label for="input-kategori">Nama kategori:</label>
+        <input id="input-kategori" type="text" maxlength="40" placeholder="Contoh: Pendidikan">
+        <button id="tambah-kategori" type="button">Simpan Kategori</button>
+        <p id="pesan-kategori" class="category-message" aria-live="polite"></p>
+    </section>
+
+    <section class="saldo" id="card-saldo" aria-labelledby="saldo-title">
+        <p id="saldo-title">Total Saldo</p>
+        <h2>$ <span id="total-saldo">0.00</span></h2>
+        <div id="form-saldo" class="hidden">
+            <label for="input-saldo">Tambah saldo</label>
+            <input id="input-saldo" type="number" min="0.01" step="0.01" placeholder="Masukkan saldo">
+            <button id="tambah-saldo" type="button">Tambah saldo</button>
+        </div>
+    </section>
+
+    <form class="inputPengeluaran" id="form-transaksi">
+        <h2>Tambah Transaksi</h2>
+        <label for="item">Nama:</label>
+        <input type="text" name="item" id="item" placeholder="Masukkan nama pengeluaran" required>
+
+        <label for="input-harga">Jumlah:</label>
+        <input type="number" name="harga" id="input-harga" min="0.01" step="0.01" placeholder="Masukkan jumlah" required>
+
+        <label for="jenispengeluaran">Kategori:</label>
+        <select id="jenispengeluaran" required>
+            <option value="" selected disabled>Pilih kategori</option>
+
+            <optgroup label="Kebutuhan Rutin & Rumah Tangga (Essential / Needs)">
+                <option value="Housing">Housing / Tempat Tinggal</option>
+                <option value="Utilities">Utilities / Tagihan</option>
+                <option value="Groceries">Groceries / Belanja Bulanan</option>
+                <option value="Transportation">Transportation / Transportasi</option>
+                <option value="Healthcare">Healthcare / Kesehatan</option>
+            </optgroup>
+
+            <optgroup label="Gaya Hidup & Keinginan (Wants / Lifestyle)">
+                <option value="Food & Dining">Food & Dining / Makanan & Kuliner</option>
+                <option value="Entertainment">Entertainment & Fun / Hiburan</option>
+                <option value="Shopping">Shopping / Belanja</option>
+                <option value="Self Care">Self Care / Perawatan Diri</option>
+                <option value="Travel">Travel / Liburan</option>
+            </optgroup>
+
+            <optgroup label="Keuangan & Dana Masa Depan (Financial & Future)">
+                <option value="Savings">Savings / Tabungan</option>
+                <option value="Investments">Investments / Investasi</option>
+                <option value="Debt Repayment">Debt Repayment / Cicilan & Utang</option>
+            </optgroup>
+
+            <optgroup label="Sosial & Keluarga (Social & Family)">
+                <option value="Family & Children">Family & Children / Keluarga & Anak</option>
+                <option value="Gifts & Donations">Gifts & Donations / Hadiah & Sosial</option>
+                <option value="Pets">Pets / Hewan Peliharaan</option>
+            </optgroup>
+
+            <optgroup label="Lain-lain (Miscellaneous & Business)">
+                <option value="Work & Business">Work & Business / Operasional Kerja</option>
+                <option value="Unexpected">Unexpected / Tak Terduga</option>
+            </optgroup>
+        </select>
+        <button id="tambah-transaksi" type="submit">Tambah Transaksi</button>
+    </form>
+
+    <main class="dashboard-grid">
+        <section class="card-section" aria-labelledby="transaksi-title">
+            <h3 id="transaksi-title">Transaksi</h3>
+            <div class="transaction-controls">
+                <label for="sort-transaksi">Urutkan:</label>
+                <select id="sort-transaksi">
+                    <option value="newest">Terbaru</option>
+                    <option value="amount-asc">Jumlah terkecil</option>
+                    <option value="amount-desc">Jumlah terbesar</option>
+                    <option value="category">Kategori</option>
+                </select>
+            </div>
+            <div id="daftar-transaksi" class="transaction-list" aria-live="polite"></div>
+        </section>
+        <section class="card-section" aria-labelledby="chart-title">
+            <h3 id="chart-title">Spending By Category</h3>
+            <div class="chart-container">
+                <canvas id="chart-pengeluaran" aria-label="Pie chart pengeluaran per kategori" role="img"></canvas>
+            </div>
+        </section>
+        <section class="card-section monthly-summary" aria-labelledby="summary-title">
+            <h3 id="summary-title">Ringkasan Bulanan</h3>
+            <label for="bulan-ringkasan">Pilih bulan:</label>
+            <input id="bulan-ringkasan" type="month">
+            <p>Total pengeluaran: <strong id="total-bulanan">$0.00</strong></p>
+            <p>Jumlah transaksi: <strong id="jumlah-transaksi-bulanan">0</strong></p>
+            <h4>Per kategori</h4>
+            <ul id="rincian-kategori-bulanan"></ul>
+        </section>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>
