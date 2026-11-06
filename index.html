@@ -1,114 +1,118 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Expense &amp; Budget Visualizer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense &amp; Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
-    <header class="page-header">
-        <h1>Expense &amp; Budget Visualizer</h1>
-        <button id="toggle-category-form" type="button" aria-expanded="false" aria-controls="form-kategori">Tambah Kategori</button>
-    </header>
 
-    <section class="category-form hidden" id="form-kategori" aria-labelledby="category-title">
-        <h2 id="category-title">Tambah Kategori</h2>
-        <label for="input-kategori">Nama kategori:</label>
-        <input id="input-kategori" type="text" maxlength="40" placeholder="Contoh: Pendidikan">
-        <button id="tambah-kategori" type="button">Simpan Kategori</button>
-        <p id="pesan-kategori" class="category-message" aria-live="polite"></p>
+  <!-- Header -->
+  <header class="app-header">
+    <h1>Expense &amp; Budget Visualizer</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- Total Balance Card -->
+    <section class="card balance-card">
+      <p class="balance-label">TOTAL BALANCE</p>
+      <p class="balance-amount" id="totalBalance">$0.00</p>
     </section>
 
-    <section class="saldo" id="card-saldo" aria-labelledby="saldo-title">
-        <p id="saldo-title">Total Saldo</p>
-        <h2>$ <span id="total-saldo">0.00</span></h2>
-        <div id="form-saldo" class="hidden">
-            <label for="input-saldo">Tambah saldo</label>
-            <input id="input-saldo" type="number" min="0.01" step="0.01" placeholder="Masukkan saldo">
-            <button id="tambah-saldo" type="button">Tambah saldo</button>
+    <!-- Spending Limit Alert -->
+    <div class="limit-alert hidden" id="limitAlert">
+      ⚠️ You have exceeded your spending limit of <strong><span id="limitDisplay">$0</span></strong>!
+    </div>
+
+    <!-- Add Transaction Form -->
+    <section class="card form-card">
+      <h2>Add Transaction</h2>
+      <form id="transactionForm" novalidate>
+
+        <div class="form-group">
+          <label for="itemName">Item Name</label>
+          <input type="text" id="itemName" placeholder="e.g. Cilok" autocomplete="off" />
+          <span class="error-msg" id="nameError">Please enter an item name.</span>
         </div>
+
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" placeholder="e.g. 14.94" min="0.01" step="0.01" />
+          <span class="error-msg" id="amountError">Please enter a valid amount.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="">-- Select Category --</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Fun">Fun</option>
+          </select>
+          <span class="error-msg" id="categoryError">Please select a category.</span>
+        </div>
+
+        <!-- Optional: Add Custom Category -->
+        <div class="custom-category-section">
+          <button type="button" class="btn-link" id="toggleCustomCategory">+ Add Custom Category</button>
+          <div class="custom-category-input hidden" id="customCategoryInput">
+            <input type="text" id="newCategoryName" placeholder="Category name..." />
+            <button type="button" class="btn-secondary btn-sm" id="addCategoryBtn">Add</button>
+          </div>
+        </div>
+
+        <!-- Spending Limit -->
+        <div class="form-group">
+          <label for="spendingLimit">Spending Limit (0 = no limit)</label>
+          <input type="number" id="spendingLimit" placeholder="e.g. 100" min="0" step="0.01" value="0" />
+        </div>
+
+        <button type="submit" class="btn-primary">Add Transaction</button>
+      </form>
     </section>
 
-    <form class="inputPengeluaran" id="form-transaksi">
-        <h2>Tambah Transaksi</h2>
-        <label for="item">Nama:</label>
-        <input type="text" name="item" id="item" placeholder="Masukkan nama pengeluaran" required>
+    <!-- Transactions + Chart -->
+    <div class="bottom-grid">
 
-        <label for="input-harga">Jumlah:</label>
-        <input type="number" name="harga" id="input-harga" min="0.01" step="0.01" placeholder="Masukkan jumlah" required>
+      <!-- Transactions List -->
+      <section class="card transactions-card">
+        <div class="transactions-header">
+          <h2>Transactions</h2>
+          <div class="sort-controls">
+            <label for="sortSelect">Sort:</label>
+            <select id="sortSelect">
+              <option value="date-desc">Latest</option>
+              <option value="date-asc">Oldest</option>
+              <option value="amount-desc">Amount ↓</option>
+              <option value="amount-asc">Amount ↑</option>
+              <option value="category">Category</option>
+            </select>
+          </div>
+        </div>
+        <div class="transaction-list" id="transactionList">
+          <p class="empty-state" id="emptyState">No transactions yet. Add one above!</p>
+        </div>
+      </section>
 
-        <label for="jenispengeluaran">Kategori:</label>
-        <select id="jenispengeluaran" required>
-            <option value="" selected disabled>Pilih kategori</option>
+      <!-- Pie Chart -->
+      <section class="card chart-card">
+        <h2>Spending by Category</h2>
+        <div class="chart-wrapper">
+          <canvas id="spendingChart"></canvas>
+        </div>
+        <p class="empty-chart hidden" id="emptyChart">Add transactions to see the chart.</p>
+      </section>
 
-            <optgroup label="Kebutuhan Rutin & Rumah Tangga (Essential / Needs)">
-                <option value="Housing">Housing / Tempat Tinggal</option>
-                <option value="Utilities">Utilities / Tagihan</option>
-                <option value="Groceries">Groceries / Belanja Bulanan</option>
-                <option value="Transportation">Transportation / Transportasi</option>
-                <option value="Healthcare">Healthcare / Kesehatan</option>
-            </optgroup>
+    </div>
+  </main>
 
-            <optgroup label="Gaya Hidup & Keinginan (Wants / Lifestyle)">
-                <option value="Food & Dining">Food & Dining / Makanan & Kuliner</option>
-                <option value="Entertainment">Entertainment & Fun / Hiburan</option>
-                <option value="Shopping">Shopping / Belanja</option>
-                <option value="Self Care">Self Care / Perawatan Diri</option>
-                <option value="Travel">Travel / Liburan</option>
-            </optgroup>
+  <footer class="app-footer">
+    <p>Expense &amp; Budget Visualizer &copy; 2026</p>
+  </footer>
 
-            <optgroup label="Keuangan & Dana Masa Depan (Financial & Future)">
-                <option value="Savings">Savings / Tabungan</option>
-                <option value="Investments">Investments / Investasi</option>
-                <option value="Debt Repayment">Debt Repayment / Cicilan & Utang</option>
-            </optgroup>
-
-            <optgroup label="Sosial & Keluarga (Social & Family)">
-                <option value="Family & Children">Family & Children / Keluarga & Anak</option>
-                <option value="Gifts & Donations">Gifts & Donations / Hadiah & Sosial</option>
-                <option value="Pets">Pets / Hewan Peliharaan</option>
-            </optgroup>
-
-            <optgroup label="Lain-lain (Miscellaneous & Business)">
-                <option value="Work & Business">Work & Business / Operasional Kerja</option>
-                <option value="Unexpected">Unexpected / Tak Terduga</option>
-            </optgroup>
-        </select>
-        <button id="tambah-transaksi" type="submit">Tambah Transaksi</button>
-    </form>
-
-    <main class="dashboard-grid">
-        <section class="card-section" aria-labelledby="transaksi-title">
-            <h3 id="transaksi-title">Transaksi</h3>
-            <div class="transaction-controls">
-                <label for="sort-transaksi">Urutkan:</label>
-                <select id="sort-transaksi">
-                    <option value="newest">Terbaru</option>
-                    <option value="amount-asc">Jumlah terkecil</option>
-                    <option value="amount-desc">Jumlah terbesar</option>
-                    <option value="category">Kategori</option>
-                </select>
-            </div>
-            <div id="daftar-transaksi" class="transaction-list" aria-live="polite"></div>
-        </section>
-        <section class="card-section" aria-labelledby="chart-title">
-            <h3 id="chart-title">Spending By Category</h3>
-            <div class="chart-container">
-                <canvas id="chart-pengeluaran" aria-label="Pie chart pengeluaran per kategori" role="img"></canvas>
-            </div>
-        </section>
-        <section class="card-section monthly-summary" aria-labelledby="summary-title">
-            <h3 id="summary-title">Ringkasan Bulanan</h3>
-            <label for="bulan-ringkasan">Pilih bulan:</label>
-            <input id="bulan-ringkasan" type="month">
-            <p>Total pengeluaran: <strong id="total-bulanan">$0.00</strong></p>
-            <p>Jumlah transaksi: <strong id="jumlah-transaksi-bulanan">0</strong></p>
-            <h4>Per kategori</h4>
-            <ul id="rincian-kategori-bulanan"></ul>
-        </section>
-    </main>
-    <script src="js/script.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
